@@ -335,13 +335,13 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-stone-300 uppercase tracking-wider mb-1.5" for="emailAddress">
-                                        Email Address <span class="text-brand-gold">*</span>
+                                        Email Address <span class="normal-case text-stone-500">(Optional)</span>
                                     </label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
                                             <i class="fa-regular fa-envelope text-xs"></i>
                                         </div>
-                                        <input type="email" id="emailAddress" required autocomplete="email" placeholder="you@example.com"
+                                        <input type="email" id="emailAddress" autocomplete="email" placeholder="you@example.com"
                                                class="w-full pl-10 pr-4 py-3 bg-stone-900/90 border border-stone-700/80 rounded-xl text-white placeholder-stone-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all text-sm">
                                     </div>
                                 </div>
@@ -397,6 +397,16 @@
                             </a>
                         </div>
                     </div>
+
+                    <a href="https://www.facebook.com/laluna.cmg" target="_blank" rel="noopener noreferrer"
+                       class="mt-4 w-full rounded-2xl border border-blue-400/30 bg-[#1877F2] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-950/20 transition-all hover:-translate-y-0.5 hover:bg-[#166FE5] hover:shadow-blue-900/30 flex items-center justify-center gap-3"
+                       aria-label="Follow La Luna Grill and Cafe on Facebook">
+                        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1877F2]">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </span>
+                        <span>Follow La Luna on Facebook</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+                    </a>
                 </div>
 
                 <!-- Right Column: Interactive Digital Loyalty Card Preview -->
@@ -1077,7 +1087,7 @@
                             slug_input: 'la-luna-grill-cafe',
                             campaign_id_input: 'custom-1789519916201',
                             customer_name_input: activeMemberDetails.name,
-                            customer_email_input: activeMemberDetails.email,
+                            customer_email_input: activeMemberDetails.email || null,
                             customer_mobile_input: activeMemberDetails.mobile
                         })
                     });
@@ -1131,7 +1141,7 @@
                             slug_input: 'la-luna-grill-cafe',
                             campaign_id_input: 'custom-1789519916201',
                             customer_name_input: activeMemberDetails.name,
-                            customer_email_input: activeMemberDetails.email,
+                            customer_email_input: activeMemberDetails.email || null,
                             customer_mobile_input: activeMemberDetails.mobile
                         })
                     });
@@ -1275,7 +1285,7 @@
                             slug_input: 'la-luna-grill-cafe',
                             campaign_id_input: 'custom-1789519916201',
                             customer_name_input: nameVal,
-                            customer_email_input: emailVal,
+                            customer_email_input: emailVal || null,
                             customer_mobile_input: mobileVal
                         })
                     });
