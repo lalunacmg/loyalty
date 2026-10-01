@@ -236,7 +236,7 @@
                 <a href="#hero" class="hover:text-brand-gold transition-colors">Home</a>
                 <a href="#pass" class="hover:text-brand-gold transition-colors">VIP Pass</a>
                 <a href="#perks" class="hover:text-brand-gold transition-colors">Perks</a>
-                <a href="#calculator" class="hover:text-brand-gold transition-colors">Rewards Calc</a>
+                <a href="#calculator" class="hover:text-brand-gold transition-colors">Catering Offers</a>
                 <a href="#menu" class="hover:text-brand-gold transition-colors">Menu Teaser</a>
                 <a href="#location" class="hover:text-brand-gold transition-colors">Location</a>
             </nav>
@@ -261,7 +261,7 @@
             <a href="#hero" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">Home</a>
             <a href="#pass" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">Get Digital Loyalty Card</a>
             <a href="#perks" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">VIP Perks</a>
-            <a href="#calculator" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">Points Calculator</a>
+            <a href="#calculator" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">Catering Offers</a>
             <a href="#menu" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold border-b border-stone-800">Featured Menu</a>
             <a href="#location" class="mobile-nav-link block py-2 text-stone-300 hover:text-brand-gold">Location & Hours</a>
         </div>
@@ -554,47 +554,17 @@
         </div>
     </section>
 
-    <!-- INTERACTIVE POINTS & REWARDS CALCULATOR -->
+    <!-- UPCOMING CATERING OFFERS -->
     <section id="calculator" class="py-16 relative">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="glass-panel rounded-3xl p-6 sm:p-10 border border-brand-gold/20 shadow-2xl">
-                <div class="text-center max-w-2xl mx-auto mb-8">
-                    <span class="text-brand-gold text-xs font-semibold uppercase tracking-widest">Interactive Calculator</span>
-                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">Estimate Your Yearly Rewards</h2>
-                    <p class="text-stone-400 text-xs sm:text-sm mt-1">Slide to your estimated monthly spend at La Luna Grill & Cafe to see your free perks!</p>
-                </div>
-
-                <!-- Slider Control -->
-                <div class="space-y-6">
-                    <div class="bg-stone-900/90 p-6 rounded-2xl border border-stone-800">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-xs text-stone-400 uppercase tracking-wider font-medium">Estimated Monthly Spend</span>
-                            <span id="spendDisplay" class="font-serif text-2xl font-bold text-brand-gold">₱1,500 / mo</span>
-                        </div>
-                        <input type="range" id="spendSlider" min="300" max="10000" step="100" value="1500" 
-                               class="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
-                        <div class="flex justify-between text-[11px] text-stone-500 mt-2">
-                            <span>₱300</span>
-                            <span>₱5,000</span>
-                            <span>₱10,000+</span>
-                        </div>
+                <div class="text-center max-w-2xl mx-auto py-6 sm:py-10">
+                    <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-gold/30 bg-brand-gold/10 text-2xl text-brand-gold shadow-lg shadow-brand-gold/10">
+                        <i class="fa-solid fa-bell-concierge"></i>
                     </div>
-
-                    <!-- Calculated Rewards Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                        <div class="bg-stone-900/60 p-4 rounded-xl border border-stone-800">
-                            <span class="text-[10px] text-stone-400 uppercase tracking-wider block">Annual Loyalty Points</span>
-                            <p id="annualPoints" class="font-serif text-2xl font-bold text-white mt-1">1,800 Pts</p>
-                        </div>
-                        <div class="bg-stone-900/60 p-4 rounded-xl border border-stone-800">
-                            <span class="text-[10px] text-stone-400 uppercase tracking-wider block">Direct Savings Value</span>
-                            <p id="annualSavings" class="font-serif text-2xl font-bold text-brand-gold mt-1">₱180 Off</p>
-                        </div>
-                        <div class="bg-stone-900/60 p-4 rounded-xl border border-stone-800">
-                            <span class="text-[10px] text-stone-400 uppercase tracking-wider block">Free Rewards Unlockable</span>
-                            <p id="unlockableRewards" class="font-serif text-sm font-semibold text-amber-300 mt-1">3x Free Artisanal Coffees</p>
-                        </div>
-                    </div>
+                    <span class="text-brand-gold text-xs font-semibold uppercase tracking-widest">Coming Soon</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2">Upcoming Catering Offers</h2>
+                    <p class="text-stone-400 text-sm sm:text-base mt-3 leading-relaxed">Exciting catering packages from La Luna Grill & Cafe are being prepared. Check back soon for menus, occasions, and exclusive group offers.</p>
                 </div>
             </div>
         </div>
@@ -1405,37 +1375,6 @@
                 }
             });
 
-            // Interactive Rewards Calculator Logic
-            const spendSlider = document.getElementById('spendSlider');
-            const spendDisplay = document.getElementById('spendDisplay');
-            const annualPoints = document.getElementById('annualPoints');
-            const annualSavings = document.getElementById('annualSavings');
-            const unlockableRewards = document.getElementById('unlockableRewards');
-
-            spendSlider.addEventListener('input', function(e) {
-                const monthlySpend = parseInt(e.target.value);
-                spendDisplay.textContent = `₱${monthlySpend.toLocaleString()} / mo`;
-
-                // Calculation formulas:
-                // 1 point per ₱10 spent monthly -> Annual Spend = monthlySpend * 12
-                const yearlySpend = monthlySpend * 12;
-                const points = Math.floor(yearlySpend / 10);
-                const savingsVal = Math.floor(yearlySpend * 0.10); // 10% value
-
-                annualPoints.textContent = `${points.toLocaleString()} Pts`;
-                annualSavings.textContent = `₱${savingsVal.toLocaleString()} Off`;
-
-                // Calculate reward tier unlocks
-                if (points < 1000) {
-                    unlockableRewards.textContent = "1x Free Specialty Drink";
-                } else if (points < 3000) {
-                    unlockableRewards.textContent = "3x Free Artisanal Coffees";
-                } else if (points < 6000) {
-                    unlockableRewards.textContent = "2x Free Grill Platter Meals";
-                } else {
-                    unlockableRewards.textContent = "5x Free Sizzling Meals + VIP Club Status";
-                }
-            });
         });
     </script>
 </body>
