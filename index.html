@@ -278,6 +278,16 @@
                         Join our Digital Loyalty Card program today. Enjoy exclusive rewards, birthday perks, and instant discounts on dine-in and online orders in Catarman, Camiguin.
                     </p>
 
+                    <a id="facebookFollowBtn" href="https://www.facebook.com/laluna.cmg" target="_blank" rel="noopener noreferrer"
+                       class="facebook-follow-button mt-6 rounded-xl border border-blue-400/30 bg-[#1877F2] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-950/20 transition-all hover:-translate-y-0.5 hover:bg-[#166FE5] hover:shadow-blue-900/30 flex items-center justify-center gap-3"
+                       aria-label="Follow La Luna Grill and Cafe on Facebook">
+                        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1877F2]">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </span>
+                        <span>Follow La Luna on Facebook</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
+                    </a>
+
                     <!-- Interactive Signup Form -->
                     <div id="pass" class="mt-8 glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl relative">
                         <div id="signupFormHeader" class="flex items-center justify-between mb-6 pb-4 border-b border-stone-800">
@@ -331,10 +341,10 @@
                                 </div>
                             </div>
 
-                            <button id="claimCardBtn" type="submit"
+                            <button id="claimCardBtn" type="submit" disabled aria-describedby="cardSignupStatus"
                                     class="w-full gold-btn-gradient text-stone-950 font-bold py-4 px-6 rounded-xl text-base shadow-lg shadow-brand-gold/25 hover:shadow-brand-gold/40 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 mt-2 disabled:opacity-60 disabled:cursor-wait">
                                 <i class="fa-solid fa-id-card text-lg"></i>
-                                <span id="claimCardBtnText">Claim Digital Loyalty Card</span>
+                                <span id="claimCardBtnText">Follow Facebook to Unlock</span>
                             </button>
 
                             <p id="cardSignupStatus" class="hidden text-center text-xs mt-2" role="status" aria-live="polite"></p>
@@ -382,15 +392,6 @@
                         </div>
                     </div>
 
-                    <a href="https://www.facebook.com/laluna.cmg" target="_blank" rel="noopener noreferrer"
-                       class="facebook-follow-button mt-4 rounded-xl border border-blue-400/30 bg-[#1877F2] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-950/20 transition-all hover:-translate-y-0.5 hover:bg-[#166FE5] hover:shadow-blue-900/30 flex items-center justify-center gap-3"
-                       aria-label="Follow La Luna Grill and Cafe on Facebook">
-                        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1877F2]">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </span>
-                        <span>Follow La Luna on Facebook</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80"></i>
-                    </a>
                 </div>
 
                 <!-- Right Column: Interactive Digital Loyalty Card Preview -->
@@ -931,6 +932,73 @@
             const claimCardBtn = document.getElementById('claimCardBtn');
             const claimCardBtnText = document.getElementById('claimCardBtnText');
             const cardSignupStatus = document.getElementById('cardSignupStatus');
+            const facebookFollowBtn = document.getElementById('facebookFollowBtn');
+            const facebookGateUnlockedKey = 'laLunaFacebookGateUnlocked';
+            const facebookVisitStartedKey = 'laLunaFacebookVisitStartedAt';
+            const officialLoyaltySiteOrigin = 'https://lalunacmg.github.io';
+            const officialLoyaltySitePath = '/loyalty/';
+            let facebookGateUnlocked = false;
+
+            function isApprovedLoyaltySite() {
+                const isOfficialSite = window.location.origin === officialLoyaltySiteOrigin
+                    && (window.location.pathname === '/loyalty'
+                        || window.location.pathname.startsWith(officialLoyaltySitePath));
+                const isLocalPreview = window.location.protocol === 'file:'
+                    || window.location.hostname === 'localhost'
+                    || window.location.hostname === '127.0.0.1';
+                return isOfficialSite || isLocalPreview;
+            }
+
+            function setFacebookGateState(unlocked) {
+                facebookGateUnlocked = unlocked;
+                claimCardBtn.disabled = !unlocked;
+                claimCardBtnText.textContent = unlocked
+                    ? 'Claim Digital Loyalty Card'
+                    : 'Follow Facebook to Unlock';
+                cardSignupStatus.className = unlocked
+                    ? 'text-center text-xs mt-2 text-emerald-400'
+                    : 'text-center text-xs mt-2 text-amber-300';
+                cardSignupStatus.textContent = unlocked
+                    ? 'Facebook step completed. You may now claim your Digital Loyalty Card.'
+                    : 'Follow La Luna on Facebook, then return to this page to unlock registration.';
+            }
+
+            function tryUnlockAfterFacebookReturn() {
+                if (facebookGateUnlocked || !isApprovedLoyaltySite()) return;
+                try {
+                    const visitStartedAt = Number(sessionStorage.getItem(facebookVisitStartedKey));
+                    if (visitStartedAt && Date.now() - visitStartedAt >= 750) {
+                        localStorage.setItem(facebookGateUnlockedKey, 'true');
+                        sessionStorage.removeItem(facebookVisitStartedKey);
+                        setFacebookGateState(true);
+                    }
+                } catch (storageError) {
+                    // Keep the button locked when the browser blocks storage.
+                }
+            }
+
+            try {
+                setFacebookGateState(
+                    isApprovedLoyaltySite()
+                    && localStorage.getItem(facebookGateUnlockedKey) === 'true'
+                );
+            } catch (storageError) {
+                setFacebookGateState(false);
+            }
+
+            facebookFollowBtn.addEventListener('click', function() {
+                try {
+                    sessionStorage.setItem(facebookVisitStartedKey, String(Date.now()));
+                } catch (storageError) {
+                    // The return checks keep registration locked if storage is unavailable.
+                }
+            });
+
+            window.addEventListener('pageshow', tryUnlockAfterFacebookReturn);
+            window.addEventListener('focus', tryUnlockAfterFacebookReturn);
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) tryUnlockAfterFacebookReturn();
+            });
             const stampCardPanel = document.getElementById('stampCardPanel');
             const stampGrid = document.getElementById('stampGrid');
             const stampCardState = document.getElementById('stampCardState');
@@ -1247,6 +1315,11 @@
 
             loyaltyForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                if (!facebookGateUnlocked || !isApprovedLoyaltySite()) {
+                    setFacebookGateState(false);
+                    facebookFollowBtn.focus();
+                    return;
+                }
                 const nameVal = fullNameInput.value.trim();
                 const mobileVal = phoneNumInput.value.trim();
                 const emailVal = emailAddressInput.value.trim();
@@ -1296,7 +1369,7 @@
                 } catch (error) {
                     cardSignupStatus.className = 'text-center text-xs mt-2 text-rose-400';
                     cardSignupStatus.textContent = error.message || 'Unable to create your card. Please try again.';
-                    claimCardBtn.disabled = false;
+                    claimCardBtn.disabled = !facebookGateUnlocked;
                     claimCardBtnText.textContent = 'Claim Digital Loyalty Card';
                 }
             });
